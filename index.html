@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carl's Cafe x Kitchen - Full QR Board Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --surface: #1e1e1e;
+            --primary-red: #bd2026;
+            --text-light: #ffffff;
+            --text-muted: #aaaaaa;
+            --accent-green: #00ff66;
+            --accent-blue: #00d2ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding-bottom: 90px;
+        }
+
+        /* Top Simulation Status bar */
+        .cashier-simulation-bar {
+            background: #000;
+            color: var(--accent-green);
+            font-family: monospace;
+            padding: 8px 5%;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: var(--surface);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo-container h1 {
+            font-weight: 700;
+            font-size: 26px;
+            color: var(--primary-red);
+            letter-spacing: -0.5px;
+        }
+        .logo-container span {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+            text-transform: uppercase;
+            margin-top: -5px;
+        }
+
+        .table-badge {
+            background: rgba(189, 32, 38, 0.15);
+            border: 1px solid var(--primary-red);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-badge label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .table-badge select {
+            background: transparent;
+            color: var(--text-light);
+            border: none;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .table-badge select option {
+            background: var(--surface);
+            color: var(--text-light);
+        }
+
+        /* Menu Categories Navigation */
+        .category-nav {
+            display: flex;
+            gap: 10px;
+            padding: 15px 5%;
+            overflow-x: auto;
+            background: var(--bg-dark);
+            position: sticky;
+            top: 75px;
+            z-index: 999;
+            border-bottom: 1px solid #222;
+        }
+
+        .category-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-link {
+            background: var(--surface);
+            color: var(--text-light);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 12px;
+            white-space: nowrap;
+            border: 1px solid #333;
+            transition: 0.2s;
+        }
+
+        .cat-link:hover, .cat-link.active {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+        }
+
+        /* Main Grid Structure */
+        .menu-container {
+            padding: 10px 5%;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin: 30px 0 15px 0;
+            border-left: 4px solid var(--primary-red);
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #2a2a2a;
+        }
+
+        .menu-card-body h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .menu-card-body .desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .variant-selector {
+            background: #2a2a2a;
+            color: white;
+            border: 1px solid #444;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 12px;
+            width: 100%;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .menu-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .price {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* Quantity Controls Container */
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            background: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .qty-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .qty-input {
+            width: 26px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #9e191e;
+        }
+
+        /* Sticky Table Order Basket Summary Bar */
+        .basket-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 5%;
+            right: 5%;
+            background: var(--primary-red);
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Modals Configuration */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+        @media (min-width: 576px) {
+            .modal-overlay { align-items: center; }
+            .modal-content { border-radius: 16px; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        /* Payment Options Block */
+        .payment-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #333;
+        }
+
+        .payment-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .pay-option {
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: #1a1a1a;
+        }
+
+        .pay-option p {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .pay-option span {
+            font-size: 10px;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .pay-option.selected {
+            border-color: var(--primary-red);
+            background: rgba(189, 32, 38, 0.1);
+        }
+
+        .checkout-btn {
+            background: var(--accent-green);
+            color: #000;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* SUCCESS RECEIPT POPUP LAYER */
+        .receipt-card {
+            text-align: center;
+            padding: 10px 5px;
+        }
+        .order-number-banner {
+            background: #222;
+            border: 2px dashed var(--accent-blue);
+            color: var(--accent-blue);
+            font-size: 32px;
+            font-weight: 700;
+            font-family: monospace;
+            padding: 15px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            border-radius: 8px;
+        }
+
+        /* Live Alert Notification elements */
+        .alert-toast-container {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 320px;
+        }
+
+        .toast {
+            background: #000;
+            border-left: 4px solid var(--accent-green);
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            animation: slideIn 0.3s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Terminal Status Pipeline Header -->
+    <div class="cashier-simulation-bar">
+        <span id="sys-status">⚡ LIVE DATA: Connected to Carl's Main Cashier POS</span>
+        <span id="sys-table-indicator">Active Table: 01</span>
+    </div>
+
+    <div class="alert-toast-container" id="toastContainer"></div>
+
+    <!-- Header Layout -->
+    <header>
+        <div class="logo-container">
+            <h1>Carl's</h1>
+            <span>cafe x kitchen</span>
+        </div>
+        <div class="table-badge">
+            <label>📍 TABLE</label>
+            <select id="tableSelect" onchange="changeTableMapping()">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Quick Navigation Anchor Links -->
+    <div class="category-nav">
+        <a href="#budget" class="cat-link">Budget Meals</a>
+        <a href="#sizzling" class="cat-link">Sizzling Platters</a>
+        <a href="#silog" class="cat-link">Silog Meals</a>
+        <a href="#main" class="cat-link">Main Courses</a>
+        <a href="#soup" class="cat-link">Soup</a>
+        <a href="#burgers" class="cat-link">Burgers</a>
+        <a href="#fries" class="cat-link">Fries & Bites</a>
+        <a href="#pizza" class="cat-link">Pizza</a>
+        <a href="#barkada" class="cat-link">Barkada Sets</a>
+        <a href="#drinks" class="cat-link">Drinks</a>
+        <a href="#extras" class="cat-link">Extras</a>
+    </div>
+
+    <!-- Interactive Menu Container mapping all items from image_b91fd1.jpg -->
+    <div class="menu-container">
+        
+        <!-- BUDGET MEALS -->
+        <div class="section-title" id="budget">Budget Meals</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="bm_pastil">
+                <div class="menu-card-body">
+                    <h3>Pastil</h3>
+                    <p class="desc">Made with white steamed rice and wrapped with seasoned shredded chicken.</p>
+                    <select class="variant-selector" id="var-bm_pastil" onchange="updateCardPrice('bm_pastil')">
+                        <option value="Single|29">Single — ₱29.00</option>
+                        <option value="Double (with FREE PEPSI)|65">Double (with FREE PEPSI) — ₱65.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-bm_pastil">₱29.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('bm_pastil', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-bm_pastil" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('bm_pastil', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('bm_pastil')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="bm_samgyupcup">
+                <div class="menu-card-body">
+                    <h3>Samgyupcup</h3>
+                    <p class="desc">Grilled pork belly (samgyupsal) served in a cup with rice, lettuce, korean sauce, and kimchi.</p>
+                    <select class="variant-selector" id="var-bm_samgyupcup" onchange="updateCardPrice('bm_samgyupcup')">
+                        <option value="Small|59">Small — ₱59.00</option>
+                        <option value="Large|89">Large — ₱89.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-bm_samgyupcup">₱59.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('bm_samgyupcup', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-bm_samgyupcup" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('bm_samgyupcup', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('bm_samgyupcup')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIZZLING PLATTERS -->
+        <div class="section-title" id="sizzling">Sizzling Platters</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="sz_item">
+                <div class="menu-card-body">
+                    <h3>Sizzling Selection</h3>
+                    <p class="desc">Served hot on a sizzling plate with rice and savory gravy sauce.</p>
+                    <select class="variant-selector" id="var-sz_item" onchange="updateCardPrice('sz_item')">
+                        <option value="Burger Steak|94">Burger Steak — ₱94.00</option>
+                        <option value="Pork Chop|94">Pork Chop — ₱94.00</option>
+                        <option value="Hungarian|94">Hungarian — ₱94.00</option>
+                        <option value="Liempo|94">Liempo — ₱94.00</option>
+                        <option value="Porksisig|94">Porksisig — ₱94.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-sz_item">₱94.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('sz_item', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-sz_item" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('sz_item', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('sz_item')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SILOG MEALS -->
+        <div class="section-title" id="silog">Silog Meals</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="silog_item">
+                <div class="menu-card-body">
+                    <h3>Classic Silog Meals</h3>
+                    <p class="desc">Traditional Filipino breakfast pairing served with garlic fried rice and fried egg.</p>
+                    <select class="variant-selector" id="var-silog_item" onchange="updateCardPrice('silog_item')">
+                        <option value="Cornislog|69">Cornislog — ₱69.00</option>
+                        <option value="Spamsilog|69">Spamsilog — ₱69.00</option>
+                        <option value="Sisilog|69">Sisilog — ₱69.00</option>
+                        <option value="Tapsilog|69">Tapsilog — ₱69.00</option>
+                        <option value="Tosilog|69">Tosilog — ₱69.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-silog_item">₱69.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('silog_item', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-silog_item" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('silog_item', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('silog_item')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN COURSES -->
+        <div class="section-title" id="main">Main Courses (Good for sharing 3-4 persons)</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="mc_molo" data-name="Molo" data-price="150">
+                <div class="menu-card-body">
+                    <h3>Molo</h3>
+                    <p class="desc">Savory wonton dumpling soup flavored with shredded meats and toasted garlic garnish.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱150.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('mc_molo', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-mc_molo" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('mc_molo', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('mc_molo')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="mc_sisig" data-name="Sisig Platter" data-price="110">
+                <div class="menu-card-body">
+                    <h3>Sisig Platter</h3>
+                    <p class="desc">Sautéed seasoned pork dynamic sharing dish served crisp with chili and calamansi accents.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱110.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('mc_sisig', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-mc_sisig" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('mc_sisig', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('mc_sisig')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOUP -->
+        <div class="section-title" id="soup">Soup</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="soup_pansit">
+                <div class="menu-card-body">
+                    <h3>Pansit Miki Guisado Bagnet</h3>
+                    <p class="desc">Hot comforting noodle soup broth topped with premium sliced crispy bagnet chicharon pieces.</p>
+                    <select class="variant-selector" id="var-soup_pansit" onchange="updateCardPrice('soup_pansit')">
+                        <option value="Pansit Bagnet Small|49">Small Bagnet Noodle — ₱49.00</option>
+                        <option value="Pansit Bagnet Big|89">Big Bagnet Noodle — ₱89.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-soup_pansit">₱49.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('soup_pansit', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-soup_pansit" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('soup_pansit', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('soup_pansit')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="soup_mami" data-name="Mami" data-price="69">
+                <div class="menu-card-body">
+                    <h3>Mami</h3>
+                    <p class="desc">Tasty classic egg noodle comfort soup paired together with rich warm stock broth lanes.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱69.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('soup_mami', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-soup_mami" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('soup_mami', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('soup_mami')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="soup_lomi" data-name="Lomi" data-price="79">
+                <div class="menu-card-body">
+                    <h3>Lomi</h3>
+                    <p class="desc">Thick hearty cornstarch egg noodle soup prepared steaming hot with dynamic savory extensions.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱79.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('soup_lomi', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-soup_lomi" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('soup_lomi', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('soup_lomi')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BURGERS -->
+        <div class="section-title" id="burgers">Burgers</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="brg_item">
+                <div class="menu-card-body">
+                    <h3>Burgers & Sandwiches</h3>
+                    <p class="desc">Freshly prepared custom toasted buns with specialty meat selections.</p>
+                    <select class="variant-selector" id="var-brg_item" onchange="updateCardPrice('brg_item')">
+                        <option value="Monte Cristo|59">Monte Cristo — ₱59.00</option>
+                        <option value="Korean Burger|50">Korean Burger — ₱50.00</option>
+                        <option value="Sajg Burger|40">Sajg Burger — ₱40.00</option>
+                        <option value="Chicken Burger|65">Chicken Burger — ₱65.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-brg_item">₱59.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('brg_item', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-brg_item" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('brg_item', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('brg_item')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FRIES & BITES -->
+        <div class="section-title" id="fries">Fries & Bites</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="fb_item">
+                <div class="menu-card-body">
+                    <h3>Finger Food Snacks</h3>
+                    <p class="desc">Great for quick afternoon sharing or dynamic fast pairings.</p>
+                    <select class="variant-selector" id="var-fb_item" onchange="updateCardPrice('fb_item')">
+                        <option value="Shawarma Wrap|70">Shawarma Wrap — ₱70.00</option>
+                        <option value="Quesadilla|110">Quesadilla — ₱110.00</option>
+                        <option value="Nachos Fries Overload|120">Nachos Fries Overload — ₱120.00</option>
+                        <option value="Nachos|89">Nachos — ₱89.00</option>
+                        <option value="Jumbo Cheesy Fries|65">Jumbo Cheesy Fries — ₱65.00</option>
+                        <option value="Chippycon|35">Chippycon — ₱35.00</option>
+                        <option value="Pancit Canton|45">Pancit Canton — ₱45.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-fb_item">₱70.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('fb_item', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-fb_item" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('fb_item', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('fb_item')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PIZZA -->
+        <div class="section-title" id="pizza">Pizza (Homemade 12" cheesy pizza good for sharing)</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="pz_item">
+                <div class="menu-card-body">
+                    <h3>12" Fresh Homemade Pizza</h3>
+                    <p class="desc">Freshly baked crisp thin crust pie loaded with signature marinara base and thick mozzarella.</p>
+                    <select class="variant-selector" id="var-pz_item" onchange="updateCardPrice('pz_item')">
+                        <option value="Ham & Cheese Pizza|149">Ham & Cheese — ₱149.00</option>
+                        <option value="Pepperoni Pizza|149">Pepperoni — ₱149.00</option>
+                        <option value="Hawaiian Pizza|149">Hawaiian — ₱149.00</option>
+                        <option value="Meat & Mushroom Pizza|149">Meat & Mushroom — ₱149.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-pz_item">₱149.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('pz_item', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-pz_item" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('pz_item', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('pz_item')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARKADA SETS -->
+        <div class="section-title" id="barkada">Barkada Sets @ ₱299 (Good for sharing 3-5 pax)</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="set_a" data-name="Barkada Set A" data-price="299">
+                <div class="menu-card-body">
+                    <h3>Barkada Set A</h3>
+                    <p class="desc">Includes: 12" Pizza, 1 Jumbo Fries, 10 Chicken Fingers, and 1L Iced Tea.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱299.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('set_a', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-set_a" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('set_a', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('set_a')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="set_b" data-name="Barkada Set B" data-price="299">
+                <div class="menu-card-body">
+                    <h3>Barkada Set B</h3>
+                    <p class="desc">Includes: 12" Pizza, 1 Jumbo Fries, 2 Regular Burgers, and 1L Iced Tea.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱299.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('set_b', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-set_b" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('set_b', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('set_b')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="set_c" data-name="Barkada Set C" data-price="299">
+                <div class="menu-card-body">
+                    <h3>Barkada Set C</h3>
+                    <p class="desc">Includes: 1 Large Nachos Fries, 10 Chicken Fingers, and 1L Iced Tea.</p>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price">₱299.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('set_c', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-set_c" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('set_c', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('set_c')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DRINKS SECTION (THAI COFFEE, MILK TEA, SODA, SMOOTHIES, HOT) -->
+        <div class="section-title" id="drinks">Drinks & Cafe Hub</div>
+        <div class="menu-grid">
+            
+            <div class="menu-card" data-id="dr_thai_coffee">
+                <div class="menu-card-body">
+                    <h3>Original Thailand's Signature Iced Coffee</h3>
+                    <p class="desc">Authentic sweet, strong, cold-brewed blend profile flavorings.</p>
+                    <select class="variant-selector" id="var-dr_thai_coffee" onchange="updateCardPrice('dr_thai_coffee')">
+                        <option value="Thai Latte (Tall)|65">Thai Latte (Tall) — ₱65.00</option>
+                        <option value="Thai Latte (Grande)|85">Thai Latte (Grande) — ₱85.00</option>
+                        <option value="Thai Mocha (Tall)|75">Thai Mocha (Tall) — ₱75.00</option>
+                        <option value="Thai Mocha (Grande)|90">Thai Mocha (Grande) — ₱90.00</option>
+                        <option value="Crushed Macchiato (Tall)|70">Crushed Macchiato (Tall) — ₱70.00</option>
+                        <option value="Crushed Macchiato (Grande)|90">Crushed Macchiato (Grande) — ₱90.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_thai_coffee">₱65.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_thai_coffee', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_thai_coffee" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_thai_coffee', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_thai_coffee')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="dr_non_coffee">
+                <div class="menu-card-body">
+                    <h3>Non-Coffee Specialties</h3>
+                    <p class="desc">Creamy signature refreshing dairy non-caffeinated treats.</p>
+                    <select class="variant-selector" id="var-dr_non_coffee" onchange="updateCardPrice('dr_non_coffee')">
+                        <option value="Iced Choco (Tall)|65">Iced Choco (Tall) — ₱65.00</option>
+                        <option value="Iced Choco (Grande)|85">Iced Choco (Grande) — ₱85.00</option>
+                        <option value="Iced Strawberry (Tall)|65">Iced Strawberry (Tall) — ₱65.00</option>
+                        <option value="Iced Strawberry (Grande)|85">Iced Strawberry (Grande) — ₱85.00</option>
+                        <option value="Iced Matcha Strawberry (Tall)|70">Iced Matcha Strawberry (Tall) — ₱70.00</option>
+                        <option value="Iced Matcha Strawberry (Grande)|90">Iced Matcha Strawberry (Grande) — ₱90.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_non_coffee">₱65.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_non_coffee', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_non_coffee" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_non_coffee', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_non_coffee')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="dr_milk_tea">
+                <div class="menu-card-body">
+                    <h3>Milk Tea (22oz)</h3>
+                    <p class="desc">Perfect sweet milk teas combined with classic tapioca pearl channels.</p>
+                    <select class="variant-selector" id="var-dr_milk_tea" onchange="updateCardPrice('dr_milk_tea')">
+                        <option value="Chocolate Milk Tea|45">Chocolate — ₱45.00</option>
+                        <option value="Okinawa Milk Tea|45">Okinawa — ₱45.00</option>
+                        <option value="Taro Milk Tea|45">Taro — ₱45.00</option>
+                        <option value="Cookies and Cream Milk Tea|45">Cookies and Cream — ₱45.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_milk_tea">₱45.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_milk_tea', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_milk_tea" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_milk_tea', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_milk_tea')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="dr_fruity_soda">
+                <div class="menu-card-body">
+                    <h3>Fruity Soda (22oz)</h3>
+                    <p class="desc">Crisp sparkling carbonated sweet fruity soda infusions.</p>
+                    <select class="variant-selector" id="var-dr_fruity_soda" onchange="updateCardPrice('dr_fruity_soda')">
+                        <option value="Strawberry Soda|45">Strawberry — ₱45.00</option>
+                        <option value="Green Apple Soda|45">Green Apple — ₱45.00</option>
+                        <option value="Blue Lagoon Soda|45">Blue Lagoon — ₱45.00</option>
+                        <option value="Blueberry Soda|45">Blueberry — ₱45.00</option>
+                        <option value="Lychee Soda|45">Lychee — ₱45.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_fruity_soda">₱45.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_fruity_soda', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_fruity_soda" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_fruity_soda', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_fruity_soda')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="dr_smoothie">
+                <div class="menu-card-body">
+                    <h3>Smoothies (22oz)</h3>
+                    <p class="desc">Blended icy fruit purees rich with dynamic creamy undertones.</p>
+                    <select class="variant-selector" id="var-dr_smoothie" onchange="updateCardPrice('dr_smoothie')">
+                        <option value="Strawberry Smoothie|65">Strawberry — ₱65.00</option>
+                        <option value="Green Apple Smoothie|65">Green Apple — ₱65.00</option>
+                        <option value="Passion Fruit Smoothie|60">Passion Fruit — ₱60.00</option>
+                        <option value="Blueberry Smoothie|65">Blueberry — ₱65.00</option>
+                        <option value="Orange Smoothie|60">Orange — ₱60.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_smoothie">₱65.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_smoothie', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_smoothie" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_smoothie', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_smoothie')">Add</button>
+                </div>
+            </div>
+
+            <div class="menu-card" data-id="dr_hot">
+                <div class="menu-card-body">
+                    <h3>Hot Warm Drinks</h3>
+                    <p class="desc">Perfect comforting traditional coffee and steeped local tea varieties.</p>
+                    <select class="variant-selector" id="var-dr_hot" onchange="updateCardPrice('dr_hot')">
+                        <option value="Native Hot Coffee|30">Native Coffee — ₱30.00</option>
+                        <option value="Native Coffee with Milk|35">Native with Milk — ₱35.00</option>
+                        <option value="Hot Chocolate|45">Hot Chocolate — ₱45.00</option>
+                        <option value="Karak Tea|45">Karak Tea — ₱45.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-dr_hot">₱30.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('dr_hot', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-dr_hot" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('dr_hot', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('dr_hot')">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXTRAS & BEVERAGES -->
+        <div class="section-title" id="extras">Extras & Retail Bottled items</div>
+        <div class="menu-grid">
+            <div class="menu-card" data-id="ex_items">
+                <div class="menu-card-body">
+                    <h3>Add-ons & Soft Drinks</h3>
+                    <p class="desc">Extra servings or alternative commercially manufactured side dynamic options.</p>
+                    <select class="variant-selector" id="var-ex_items" onchange="updateCardPrice('ex_items')">
+                        <option value="Extra Rice|15">Extra Rice — ₱15.00</option>
+                        <option value="Extra Egg|15">Extra Egg — ₱15.00</option>
+                        <option value="Cup of Ice|5">Cup of Ice — ₱5.00</option>
+                        <option value="Pepsi Can|15">Pepsi Can — ₱15.00</option>
+                        <option value="Mt. Dew Can|25">Mt. Dew Can — ₱25.00</option>
+                        <option value="Bottled Water|20">Bottled Water — ₱20.00</option>
+                        <option value="Coke 1L Bottle|45">Coke 1L Bottle — ₱45.00</option>
+                    </select>
+                </div>
+                <div class="menu-card-footer">
+                    <span class="price" id="price-ex_items">₱15.00</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustQty('ex_items', -1)">-</button>
+                        <input type="text" class="qty-input" id="qty-ex_items" value="1" readonly>
+                        <button class="qty-btn" onclick="adjustQty('ex_items', 1)">+</button>
+                    </div>
+                    <button class="add-btn" onclick="pushToCart('ex_items')">Add</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sticky Table Order Basket Summary Bar -->
+    <div class="basket-bar" id="basketBar" onclick="toggleCartModal(true)">
+        <div>
+            <span style="font-weight:700; font-size:16px;" id="basketSummaryCount">🛒 0 Items Loaded</span>
+            <p style="font-size:11px; opacity:0.8;">Click to review table payload</p>
+        </div>
+        <div style="font-weight:700; font-size:18px;">₱<span id="basketSummaryTotal">0.00</span></div>
+    </div>
+
+    <!-- Checkout Modal Sheet & Verification Screens -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-content" id="modalDynamicBody">
+            <!-- Interchanged by scripts dynamically -->
+        </div>
+    </div>
+
+    <script>
+        let currentCart = {};
+        let activePaymentMethod = "Cashless";
+        let baseOrderSequence = 7431;
+
+        // Dynamic function updates item prices visually when card suboptions/tier toggles switch paths
+        function updateCardPrice(id) {
+            const selectValue = document.getElementById(`var-${id}`).value;
+            const contextPrice = parseFloat(selectValue.split('|')[1]);
+            document.getElementById(`price-${id}`).innerText = `₱${contextPrice.toFixed(2)}`;
+        }
+
+        function adjustQty(id, modifier) {
+            const input = document.getElementById(`qty-${id}`);
+            let val = parseInt(input.value) + modifier;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        function pushToCart(id) {
+            const card = document.querySelector(`[data-id="${id}"]`);
+            let name = "";
+            let price = 0;
+
+            // Handle whether the card has variant selectors or a static value
+            const selectorElement = document.getElementById(`var-${id}`);
+            if (selectorElement) {
+                const parts = selectorElement.value.split('|');
+                name = `${id.toUpperCase().split('_')[1] || ''} (${parts[0]})`;
+                price = parseFloat(parts[1]);
+            } else {
+                name = card.getAttribute('data-name');
+                price = parseFloat(card.getAttribute('data-price'));
+            }
+
+            const inputQty = parseInt(document.getElementById(`qty-${id}`).value);
+            const generationToken = `${id}_${name.replace(/\s+/g, '')}`;
+
+            if (currentCart[generationToken]) {
+                currentCart[generationToken].qty += inputQty;
+            } else {
+                currentCart[generationToken] = { name: name, price: price, qty: inputQty };
+            }
+
+            document.getElementById(`qty-${id}`).value = 1;
+            triggerSystemLog(`Staged: ${inputQty}x ${name}`);
+            recalculateTotals();
+        }
+
+        function recalculateTotals() {
+            let totalItemUnits = 0;
+            let totalPriceValue = 0;
+
+            for (let key in currentCart) {
+                totalItemUnits += currentCart[key].qty;
+                totalPriceValue += (currentCart[key].price * currentCart[key].qty);
+            }
+
+            document.getElementById('basketSummaryCount').innerText = `🛒 ${totalItemUnits} Items Loaded`;
+            document.getElementById('basketSummaryTotal').innerText = totalPriceValue.toFixed(2);
+        }
+
+        function toggleCartModal(displayState) {
+            const overlay = document.getElementById('cartModal');
+            if (displayState) {
+                renderCartLayout();
+                overlay.style.display = 'flex';
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+
+        function renderCartLayout() {
+            const currentTable = document.getElementById('tableSelect').value;
+            let grandTotal = 0;
+            let itemsHTML = '';
+
+            if (Object.keys(currentCart).length === 0) {
+                itemsHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px 0;">Your layout bundle cart is currently empty.</p>`;
+            } else {
+                for (let key in currentCart) {
+                    let item = currentCart[key];
+                    let itemSubtotal = item.price * item.qty;
+                    grandTotal += itemSubtotal;
+                    itemsHTML += `
+                        <div class="cart-row">
+                            <div>
+                                <p style="font-weight:500; font-size:14px;">${item.name}</p>
+                                <span style="font-size:11px; color:var(--text-muted)">₱${item.price.toFixed(2)} × ${item.qty}</span>
+                            </div>
+                            <span style="font-weight:600; font-size:14px;">₱${itemSubtotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            document.getElementById('modalDynamicBody').innerHTML = `
+                <div class="modal-header">
+                    <h2 style="font-size:16px;">Confirm Table Basket</h2>
+                    <button class="close-modal" onclick="toggleCartModal(false)">&times;</button>
+                </div>
+                
+                <p style="font-size:12px; margin-bottom:15px; color: var(--text-muted)">
+                    📍 Target Location routing: <strong style="color:white">Table ${currentTable}</strong>
+                </p>
+
+                <div id="cartItemsContainer" style="max-height: 240px; overflow-y:auto;">${itemsHTML}</div>
+
+                <div style="display:flex; justify-content:space-between; margin-top:20px; font-weight:700; font-size:16px;">
+                    <span>Subtotal Due:</span>
+                    <span style="color:var(--accent-green)">₱<span>${grandTotal.toFixed(2)}</span></span>
+                </div>
+
+                <div class="payment-section">
+                    <div class="payment-title" style="font-size:12px;">Payment Settings:</div>
+                    <div class="payment-options">
+                        <div class="pay-option ${activePaymentMethod === 'Cashless' ? 'selected' : ''}" id="opt-cashless" onclick="setPayment('Cashless')">
+                            <p>📱 Cashless App</p>
+                            <span>GCash / Maya</span>
+                        </div>
+                        <div class="pay-option ${activePaymentMethod === 'Counter' ? 'selected' : ''}" id="opt-counter" onclick="setPayment('Counter')">
+                            <p>💵 Counter Pay</p>
+                            <span>Register Desk</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="checkout-btn" onclick="dispatchOrderToCashierTerminal()">Submit Order Pipeline</button>
+            `;
+        }
+
+        function setPayment(method) {
+            activePaymentMethod = method;
+            document.getElementById('opt-cashless').classList.remove('selected');
+            document.getElementById('opt-counter').classList.remove('selected');
+
+            if(method === 'Cashless') {
+                document.getElementById('opt-cashless').classList.add('selected');
+            } else {
+                document.getElementById('opt-counter').classList.add('selected');
+            }
+        }
+
+        function changeTableMapping() {
+            const num = document.getElementById('tableSelect').value;
+            document.getElementById('sys-table-indicator').innerText = `Active Table: ${num}`;
+            triggerSystemLog(`Mapping updated to Table ${num}`);
+        }
+
+        function dispatchOrderToCashierTerminal() {
+            if (Object.keys(currentCart).length === 0) {
+                alert("Stash cart empty. Please pick elements first.");
+                return;
+            }
+
+            baseOrderSequence += 1;
+            const finalizedOrderNum = `CRL-${baseOrderSequence}`;
+            const tableNum = document.getElementById('tableSelect').value;
+            
+            triggerSystemLog(`Order ${finalizedOrderNum} deployed via Table ${tableNum}.`);
+            renderVerificationTicket(finalizedOrderNum, tableNum);
+            
+            currentCart = {};
+            recalculateTotals();
+        }
+
+        function renderVerificationTicket(orderNum, tableNum) {
+            const body = document.getElementById('modalDynamicBody');
+            let contextualInstruction = activePaymentMethod === "Counter" ? 
+                `<p style="color: #ffcc00; font-size:13px; font-weight:600; margin-top:10px;">⚠️ Present this Order Number to the cashier registry to process counter payments.</p>` :
+                `<p style="color: var(--accent-green); font-size:13px; margin-top:10px;">✓ Cashless token checked. Kitchen printing layout deployed automatically.</p>`;
+
+            body.innerHTML = `
+                <div class="receipt-card">
+                    <h2 style="color: var(--accent-green); font-size:20px; margin-bottom:5px;">Order Dispatched!</h2>
+                    <p style="font-size:12px; color: var(--text-muted)">Carl's Cafe x Kitchen • Table ${tableNum}</p>
+                    
+                    <div class="order-number-banner">
+                        <span style="font-size:11px; display:block; font-family:'Poppins'; letter-spacing:0; font-weight:400; color:var(--text-muted); margin-bottom:5px;">VERIFICATION REF</span>
+                        ${orderNum}
+                    </div>
+
+                    ${contextualInstruction}
+
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:20px;">
+                        Data streamed directly to cashier monitor systems. Please keep this screen open for validation.
+                    </p>
+
+                    <button class="checkout-btn" style="background:#333; color:white; margin-top:20px;" onclick="toggleCartModal(false)">
+                        Return to Menu
+                    </button>
+                </div>
+            `;
+        }
+
+        function triggerSystemLog(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `⚙️ [POS]: ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = '0.4s';
+                setTimeout(() => toast.remove(), 400);
+            }, 4500);
+        }
+    </script>
+</body>
+</html>
