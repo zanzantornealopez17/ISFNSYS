@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luto Ni Jewel - QR Dine & Order</title>
+    <!-- Google Fonts for styling matching the image_741ea9.jpg vibe -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f7f4eb;
+            --primary-color: #1a3c22;
+            --accent-color: #e28743;
+            --text-dark: #2b2b2b;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding-bottom: 60px;
+        }
+
+        /* Header / Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background-color: var(--bg-color);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 8%;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: var(--primary-color);
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* Table Selector QR Setup */
+        .table-selector-box {
+            background: #eddcc4;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(26, 60, 34, 0.2);
+        }
+
+        .table-selector-box label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .table-selector-box select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--primary-color);
+            font-weight: 600;
+            background: white;
+            cursor: pointer;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c96f2c;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50% 50% 20% 20%; /* Styled styling representing standard savory dishes */
+            object-fit: cover;
+        }
+
+        /* Best Sellers Menu Section */
+        .menu-section {
+            padding: 60px 8%;
+        }
+
+        .menu-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-img-placeholder {
+            height: 180px;
+            background: #e9e4d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 14px;
+            position: relative;
+        }
+
+        /* Adding a touch of green banner top inside placeholder like the design */
+        .menu-img-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: rgba(26, 60, 34, 0.1);
+        }
+
+        .menu-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu-info h3 {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .menu-info .price {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        /* Floating Cart & Cashier Connection Simulation Banner */
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        /* Order Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Cashier Push Notification Feed mockup */
+        .cashier-alert-system {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .alert-box {
+            background: #111;
+            color: #00ff66;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 12px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            header { padding: 15px 5%; }
+            .hero { padding: 20px 5%; text-align: center; justify-content: center;}
+            .hero-text h1 { font-size: 36px; }
+            .cta-buttons, .table-selector-box { justify-content: center; width: 100%; }
+            .menu-section { padding: 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cashier Simulation Log Window (Demonstrates Backend Connection) -->
+    <div class="cashier-alert-system" id="cashierAlerts">
+        <div class="alert-box" style="color: #fff; background: var(--primary-color)">
+            [SYSTEM]: QR Code active. Connected to Cashier Terminal #1.
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Luto Ni Jewel</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <!-- Simulated Auto-fill table via QR scan string structure -->
+            <div class="table-selector-box">
+                <label for="tableNumber">📍 Dine-In Table:</label>
+                <select id="tableNumber" onchange="updateTableAlert()">
+                    <option value="1">Table 01 (Scanned QR)</option>
+                    <option value="2">Table 02</option>
+                    <option value="3">Table 03</option>
+                    <option value="4">Table 04</option>
+                    <option value="5">Table 05</option>
+                </select>
+            </div>
+
+            <h1>Authentic Filipino Flavors Built For Order</h1>
+            <p>Welcome to Luto Ni Jewel. Skip the line! Scan your table's unique QR code, select your local culinary favorites, and place your order instantly to our cashier.</p>
+            
+            <div class="cta-buttons">
+                <a href="#menu" class="btn btn-primary">Order Now</a>
+                <a href="#" class="btn btn-secondary">Book A Table</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <!-- Serving as high quality visual food layout from template -->
+            <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80" alt="Delicious Adobo / Lutong Bahay Signature Dish">
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <h2>Best seller nga mga niluto</h2>
+        
+        <div class="menu-grid">
+            <!-- Card 1 -->
+            <div class="menu-card">
+                <div class="menu-img-placeholder">🍲 Special Adobo</div>
+                <div class="menu-info">
+                    <h3>Special Adobo</h3>
+                    <p class="price">₱180.00</p>
+                    <button class="btn btn-primary" style="width:100%; padding: 8px;" onclick="addToCart('Special Adobo', 180)">Add to Order</button>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="menu-card">
+                <div class="menu-img-placeholder">🥣 Sinigang na Baboy</div>
+                <div class="menu-info">
+                    <h3>Sinigang Baboy</h3>
+                    <p class="price">₱220.00</p>
+                    <button class="btn btn-primary" style="width:100%; padding: 8px;" onclick="addToCart('Sinigang Baboy', 220)">Add to Order</button>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="menu-card">
+                <div class="menu-img-placeholder">🍗 Crispy Kawali</div>
+                <div class="menu-info">
+                    <h3>Crispy Liempo</h3>
+                    <p class="price">₱250.00</p>
+                    <button class="btn btn-primary" style="width:100%; padding: 8px;" onclick="addToCart('Crispy Liempo', 250)">Add to Order</button>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="menu-card">
+                <div class="menu-img-placeholder">🍹 Kare-Kare</div>
+                <div class="menu-info">
+                    <h3>Kare-Kare Beef</h3>
+                    <p class="price">₱280.00</p>
+                    <button class="btn btn-primary" style="width:100%; padding: 8px;" onclick="addToCart('Kare-Kare Beef', 280)">Add to Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Basket Button -->
+    <div class="floating-cart" onclick="toggleModal(true)">
+        🛒 My Table Order (<span id="cartCount">0</span>)
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-title">Confirm Table Order</div>
+            <p style="margin-bottom: 15px; font-size: 14px; color: var(--accent-color);">
+                📍 Sending Directly to Cashier for <strong>Table <span id="modalTableNum">1</span></strong>
+            </p>
+            <div id="cartItemsList">
+                <!-- Selected Items Populate Here dynamically -->
+            </div>
+            <div style="margin-top: 20px; font-weight: 600; text-align: right; font-size: 18px;">
+                Total: ₱<span id="cartTotal">0</span>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" style="flex:1;" onclick="toggleModal(false)">Cancel</button>
+                <button class="btn btn-primary" style="flex:2;" onclick="sendOrderToCashier()">Send To Cashier</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Logic Script -->
+    <script>
+        let cart = [];
+        
+        function addToCart(itemName, price) {
+            cart.push({name: itemName, price: price});
+            document.getElementById('cartCount').innerText = cart.length;
+            
+            // Simulating UI interaction sound or tiny notification
+            showSystemLog(`Added ${itemName} to your sequence.`);
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('cartModal');
+            const tableNum = document.getElementById('tableNumber').value;
+            document.getElementById('modalTableNum').innerText = tableNum;
+
+            if(show) {
+                const listContainer = document.getElementById('cartItemsList');
+                listContainer.innerHTML = '';
+                let total = 0;
+                
+                if(cart.length === 0) {
+                    listContainer.innerHTML = '<p style="color:#777; text-align:center;">Your cart is empty.</p>';
+                } else {
+                    cart.forEach((item) => {
+                        total += item.price;
+                        listContainer.innerHTML += `
+                            <div class="cart-item">
+                                <span>${item.name}</span>
+                                <strong>₱${item.price}.00</strong>
+                            </div>
+                        `;
+                    });
+                }
+                document.getElementById('cartTotal').innerText = total;
+                modal.style.display = 'flex';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function sendOrderToCashier() {
+            if(cart.length === 0) {
+                alert("Please add items to your order first!");
+                return;
+            }
+            const tableNum = document.getElementById('tableNumber').value;
+            
+            // Simulate the active socket connection event instantly appearing on the kitchen/POS monitor
+            showSystemLog(`🚨 CASHIER RECEIVING: Table ${tableNum} placed order for ${cart.length} items!`);
+            
+            alert(`Success! Your order has been beamed to the Cashier Terminal for Table ${tableNum}. Preparing food!`);
+            
+            // Reset state
+            cart = [];
+            document.getElementById('cartCount').innerText = '0';
+            toggleModal(false);
+        }
+
+        function updateTableAlert() {
+            const tableNum = document.getElementById('tableNumber').value;
+            showSystemLog(`System swapped routing path to: Table ${tableNum}`);
+        }
+
+        function showSystemLog(message) {
+            const alertsFeed = document.getElementById('cashierAlerts');
+            const logBox = document.createElement('div');
+            logBox.className = 'alert-box';
+            logBox.innerHTML = `[LIVE LIVE]: ${message}`;
+            alertsFeed.appendChild(logBox);
+            
+            // Auto remove mock logs after 4 seconds
+            setTimeout(() => {
+                logBox.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
